@@ -1,0 +1,27 @@
+﻿@model IEnumerable<TaskManagment.ViewModels.UserViewModel>
+
+@{
+    ViewBag.Title = "Users ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p>
+
+</p>
+<div class="container">
+    <div class="jumbotron">
+
+        @foreach (var item in Model)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    item.UserName
+                </div>
+               
+                
+            </div>
+        }
+
+    </div>
+
+</div>
