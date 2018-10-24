@@ -34,13 +34,6 @@ namespace TaskManagment.Controllers
             return View(viewModelUser);
         }
 
-        //public ActionResult Create()
-        //{
-        //    List<Role> Roles = roleService.GetRoles();
-
-        //    ViewBag.RolesList = new SelectList(Roles, "ID", "RoleName");
-        //    return View();
-        //}
         // edit
         public ActionResult Create(int? ID)
         {

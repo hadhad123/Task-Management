@@ -46,7 +46,7 @@ namespace Service
 
         public void EditRole(Role Role)
         {
-            RoleRepository.Edit(Role);
+            RoleRepository.Edit(Role.ID,Role);
             SaveRole();
         }
 

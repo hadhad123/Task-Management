@@ -66,7 +66,7 @@ namespace Service
             User.Role = null;
             User.Tasks = null;
             
-            UserRepository.Edit(User);
+            UserRepository.Edit(User.ID,User);
             SaveUser();
         }
 

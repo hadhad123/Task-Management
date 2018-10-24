@@ -69,11 +69,15 @@ namespace Data.Repositories
             DbEntityEntry dbEntityEntry = DbContext.Entry<T>(entity);
             DbContext.Set<T>().Add(entity);
         }
-        public virtual void Edit(T entity)
+        public virtual void Edit(int ID, T entity)
         {
-            DbEntityEntry dbEntityEntry = DbContext.Entry<T>(entity);
-            
-            dbEntityEntry.State = EntityState.Modified;
+            var local = DbContext.Set<T>().Find(ID);
+            if(local !=null)
+            {
+                dataContext.Entry(local).State = EntityState.Detached;
+            }
+            DbContext.Set<T>().Attach(entity);
+            dataContext.Entry(entity).State = EntityState.Modified;
 
         }
         public virtual void Delete(T entity)
