@@ -9,8 +9,10 @@ namespace Service
 {
     public interface IUserService
     {
-        List<User> GetUser();
+        List<User> GetUsers();
+        User GetUserByID(int ID);
         void CreateUser(User User);
+        void EditUser(User User);
         void SaveUser();
     }
 }

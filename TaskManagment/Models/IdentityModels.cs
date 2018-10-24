@@ -29,5 +29,7 @@ namespace TaskManagment.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<TaskManagment.ViewModels.UserViewModel> UserViewModels { get; set; }
     }
 }

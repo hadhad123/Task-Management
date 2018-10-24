@@ -17,8 +17,8 @@ namespace Data.Migrations
                         TaskID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Task", t => t.TaskID, cascadeDelete: true)
-                .ForeignKey("dbo.User", t => t.UserID, cascadeDelete: true)
+                .ForeignKey("dbo.Task", t => t.TaskID)
+                .ForeignKey("dbo.User", t => t.UserID)
                 .Index(t => t.UserID)
                 .Index(t => t.TaskID);
             
@@ -56,6 +56,7 @@ namespace Data.Migrations
                         HashedPassword = c.String(nullable: false, maxLength: 200),
                         Salt = c.String(nullable: false, maxLength: 200),
                         RoleID = c.Int(nullable: false),
+                        Active = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
             
@@ -68,8 +69,8 @@ namespace Data.Migrations
                         RoleID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Role", t => t.RoleID, cascadeDelete: true)
-                .ForeignKey("dbo.User", t => t.UserID, cascadeDelete: true)
+                .ForeignKey("dbo.Role", t => t.RoleID)
+                .ForeignKey("dbo.User", t => t.UserID)
                 .Index(t => t.UserID)
                 .Index(t => t.RoleID);
             

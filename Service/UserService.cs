@@ -12,56 +12,60 @@ namespace Service
     public class UserService : IUserService
     {
         private readonly IUserRepository UserRepository;
+        private readonly IEncryptionService EncryptionService;
         private readonly IUnitOfWork unitOfWork;
 
-        public UserService(IUserRepository UserRepository, IUnitOfWork unitOfWork)
+        public UserService(IUserRepository UserRepository, IEncryptionService EncryptionService, IUnitOfWork unitOfWork)
         {
             this.UserRepository = UserRepository;
+            this.EncryptionService = EncryptionService;
             this.unitOfWork = unitOfWork;
         }
 
-        public List<User> GetUser()
+        public List<User> GetUsers()
         {
-            var Users = UserRepository.GetAll().ToList();
+            List<User> Users = UserRepository.GetAll().ToList();
             return Users;
+        }
+
+        public User GetUserByID(int ID)
+        {
+            User User = UserRepository.GetByID(ID);
+            return User;
         }
 
         public void CreateUser(User User)
         {
+            User Exists = UserRepository.Get(x => x.UserName == User.UserName && x.Email == User.Email).FirstOrDefault();
+            if(Exists != null)
+            {
+                throw new Exception("Username & Email already in use");
+            }
+            string salt = EncryptionService.CreateSalt();
+            string HassedPassword = EncryptionService.EncryptPassword(User.HashedPassword, salt);
+            User.HashedPassword = HassedPassword;
+            User.Salt = salt;
 
-            //var existingUser = _userRepository.GetSingleByUsername(username);
-
-            //if (existingUser != null)
-            //{
-            //    throw new Exception("Username is already in use");
-            //}
-
-            //var passwordSalt = _encryptionService.CreateSalt();
-
-            //var user = new User()
-            //{
-            //    Username = username,
-            //    Salt = passwordSalt,
-            //    Email = email,
-            //    IsLocked = false,
-            //    HashedPassword = _encryptionService.EncryptPassword(password, passwordSalt),
-            //    DateCreated = DateTime.Now
-            //};
-
-            //_userRepository.Add(user);
-
-            //_unitOfWork.Commit();
-
-            //if (roles != null || roles.Length > 0)
-            //{
-            //    foreach (var role in roles)
-            //    {
-            //        addUserToRole(user, role);
-            //    }
-            //}
-
-            //SaveUser();
             UserRepository.Add(User);
+            SaveUser();
+        }
+
+        public void EditUser(User User)
+        {
+            User OldUserData = UserRepository.GetByID(User.ID);
+            User.Salt = OldUserData.Salt;
+            string NewHassedPassword = EncryptionService.EncryptPassword(User.HashedPassword, User.Salt);
+            //check if password has been changed 
+            if (OldUserData.HashedPassword != NewHassedPassword)
+            {
+                string salt = EncryptionService.CreateSalt();
+                string HassedPassword = EncryptionService.EncryptPassword(User.HashedPassword, salt);
+                User.HashedPassword = HassedPassword;
+                User.Salt = salt;
+            }
+            User.UserRoles = null;
+            User.Tasks = null;
+            UserRepository.Edit(User);
             SaveUser();
         }
 

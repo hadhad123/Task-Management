@@ -13,8 +13,8 @@ namespace Data.Repositories
         IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
         IQueryable<T> All { get; }
         IQueryable<T> GetAll();
-        T GetSingle(int id);
-        IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
+        T GetByID(int id);
+        IQueryable<T> Get(Expression<Func<T, bool>> predicate);
         void Add(T entity);
         void Delete(T entity);
         void Edit(T entity);

@@ -55,11 +55,11 @@ namespace Data.Repositories
             }
             return query;
         }
-        public T GetSingle(int id)
+        public T GetByID(int id)
         {
             return GetAll().FirstOrDefault(x => x.ID == id);
         }
-        public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>> predicate)
         {
             return DbContext.Set<T>().Where(predicate);
         }
@@ -73,6 +73,7 @@ namespace Data.Repositories
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry<T>(entity);
             dbEntityEntry.State = EntityState.Modified;
+
         }
         public virtual void Delete(T entity)
         {

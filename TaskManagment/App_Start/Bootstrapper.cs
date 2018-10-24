@@ -20,7 +20,8 @@ namespace TaskManagment.App_Start
         {
             SetAutofacContainer();
             //Configure AutoMapper
-            AutoMapperConfiguration.Configure();
+            AutoMapperConfiguration Mapper = new AutoMapperConfiguration();
+            Mapper.Configure();
         }
 
         private static void SetAutofacContainer()
@@ -30,6 +31,7 @@ namespace TaskManagment.App_Start
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
             builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
 
+
             // Repositories
             builder.RegisterAssemblyTypes(typeof(UserRepository).Assembly)
                 .Where(t => t.Name.EndsWith("Repository"))
@@ -38,20 +40,6 @@ namespace TaskManagment.App_Start
             builder.RegisterAssemblyTypes(typeof(UserService).Assembly)
                .Where(t => t.Name.EndsWith("Service"))
                .AsImplementedInterfaces().InstancePerRequest();
-
-            //// EF Context
-            //builder.RegisterType<TaskManagmentContext>()
-            //       .As<TaskManagmentContext>()
-            //       .InstancePerRequest();
-
-            //// Repositories
-            //builder.RegisterType<UserRepository>()
-            //    .As<IUserRepository>().InstancePerRequest();
-
-            //// Services
-            //builder.RegisterType<UserService>()
-            //    .As<IUserService>()
-            //    .InstancePerRequest();
 
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

@@ -17,6 +17,7 @@ namespace Model
         public string HashedPassword { get; set; }
         public string Salt { get; set; }
         public int RoleID { get; set; }
+        public bool Active { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
 

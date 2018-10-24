@@ -34,6 +34,8 @@ namespace Data
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
+            modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new UserConfiguration());
@@ -43,5 +45,6 @@ namespace Data
             modelBuilder.Configurations.Add(new TaskStatusConfiguration());
             modelBuilder.Configurations.Add(new CommentConfiguration());
         }
+
     }
 }

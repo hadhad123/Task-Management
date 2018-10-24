@@ -5,6 +5,7 @@ namespace Data.Migrations
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.ModelConfiguration.Conventions;
     using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<Data.TaskManagmentContext>
@@ -53,7 +54,8 @@ namespace Data.Migrations
                 HashedPassword = "AIR7kPNLtWC+BYxdigiXQaNTvTsz91WME8HWGBJxgePfyBNo+rpHYuCVtYLEwoikLg==",
                 Email = "admin@gmail.com",
                 Salt = "d85bdd0d-890c-46d3-8dc0-b5491c33f099",
-                RoleID = ManagerRole.ID
+                RoleID = ManagerRole.ID,
+                Active = true
             };
             User UserExists = context.Users.FirstOrDefault(u => u.UserName == AdminUser.UserName);
             if (UserExists == null)
