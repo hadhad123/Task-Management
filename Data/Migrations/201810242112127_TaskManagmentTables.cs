@@ -58,20 +58,8 @@ namespace Data.Migrations
                         RoleID = c.Int(nullable: false),
                         Active = c.Boolean(nullable: false),
                     })
-                .PrimaryKey(t => t.ID);
-            
-            CreateTable(
-                "dbo.UserRole",
-                c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
-                        RoleID = c.Int(nullable: false),
-                    })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Role", t => t.RoleID)
-                .ForeignKey("dbo.User", t => t.UserID)
-                .Index(t => t.UserID)
                 .Index(t => t.RoleID);
             
             CreateTable(
@@ -101,11 +89,9 @@ namespace Data.Migrations
             DropForeignKey("dbo.Task", "TaskStatus_ID", "dbo.TaskStatus");
             DropForeignKey("dbo.Task", "CreatedUser_ID", "dbo.User");
             DropForeignKey("dbo.Task", "AssignedUser_ID", "dbo.User");
-            DropForeignKey("dbo.UserRole", "UserID", "dbo.User");
-            DropForeignKey("dbo.UserRole", "RoleID", "dbo.Role");
             DropForeignKey("dbo.Task", "User_ID", "dbo.User");
-            DropIndex("dbo.UserRole", new[] { "RoleID" });
-            DropIndex("dbo.UserRole", new[] { "UserID" });
+            DropForeignKey("dbo.User", "RoleID", "dbo.Role");
+            DropIndex("dbo.User", new[] { "RoleID" });
             DropIndex("dbo.Task", new[] { "TaskStatus_ID" });
             DropIndex("dbo.Task", new[] { "CreatedUser_ID" });
             DropIndex("dbo.Task", new[] { "AssignedUser_ID" });
@@ -114,7 +100,6 @@ namespace Data.Migrations
             DropIndex("dbo.Comment", new[] { "UserID" });
             DropTable("dbo.TaskStatus");
             DropTable("dbo.Role");
-            DropTable("dbo.UserRole");
             DropTable("dbo.User");
             DropTable("dbo.Task");
             DropTable("dbo.Comment");

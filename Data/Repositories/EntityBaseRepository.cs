@@ -72,6 +72,7 @@ namespace Data.Repositories
         public virtual void Edit(T entity)
         {
             DbEntityEntry dbEntityEntry = DbContext.Entry<T>(entity);
+            
             dbEntityEntry.State = EntityState.Modified;
 
         }

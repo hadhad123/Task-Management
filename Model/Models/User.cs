@@ -8,7 +8,6 @@ namespace Model
     {
         public User()
         {
-            UserRoles = new List<UserRole>();
             Tasks = new List<Task>();
         }
         public int ID { get; set; }
@@ -18,7 +17,7 @@ namespace Model
         public string Salt { get; set; }
         public int RoleID { get; set; }
         public bool Active { get; set; }
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual Role Role { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
 
     }

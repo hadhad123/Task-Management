@@ -20,7 +20,6 @@ namespace Data
         #region Entity Sets
         public IDbSet<User> Users { get; set; }
         public IDbSet<Role> Roles { get; set; }
-        public IDbSet<UserRole> UserRoles { get; set; }
         public IDbSet<Model.Task> Tasks { get; set; }
         public IDbSet<Model.TaskStatus> TaskStatuses { get; set; }
         public IDbSet<Comment> Comments { get; set; }
@@ -39,7 +38,6 @@ namespace Data
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new UserConfiguration());
-            modelBuilder.Configurations.Add(new UserRoleConfiguration());
             modelBuilder.Configurations.Add(new RoleConfiguration());
             modelBuilder.Configurations.Add(new TaskConfiguration());
             modelBuilder.Configurations.Add(new TaskStatusConfiguration());

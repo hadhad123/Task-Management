@@ -63,8 +63,9 @@ namespace Service
                 User.HashedPassword = HassedPassword;
                 User.Salt = salt;
             }
-            User.UserRoles = null;
+            User.Role = null;
             User.Tasks = null;
+            
             UserRepository.Edit(User);
             SaveUser();
         }

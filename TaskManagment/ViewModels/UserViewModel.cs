@@ -26,7 +26,7 @@ namespace TaskManagment.ViewModels
 
         [Required]
         public bool Active { get; set; }
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual Role Role { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
     }
 }

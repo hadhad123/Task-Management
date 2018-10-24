@@ -57,15 +57,14 @@
     <Compile Include="Configurations\TaskConfiguration.cs" />
     <Compile Include="Configurations\TaskStatusConfiguration.cs" />
     <Compile Include="Configurations\UserConfiguration.cs" />
-    <Compile Include="Configurations\UserRoleConfiguration.cs" />
     <Compile Include="Infrastructure\DbFactory.cs" />
     <Compile Include="Infrastructure\Disposable.cs" />
     <Compile Include="Infrastructure\IDbFactory.cs" />
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201810232124130_TaskManagmentTables.cs" />
-    <Compile Include="Migrations\201810232124130_TaskManagmentTables.Designer.cs">
-      <DependentUpon>201810232124130_TaskManagmentTables.cs</DependentUpon>
+    <Compile Include="Migrations\201810242112127_TaskManagmentTables.cs" />
+    <Compile Include="Migrations\201810242112127_TaskManagmentTables.Designer.cs">
+      <DependentUpon>201810242112127_TaskManagmentTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,8 +81,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201810232124130_TaskManagmentTables.resx">
-      <DependentUpon>201810232124130_TaskManagmentTables.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810242112127_TaskManagmentTables.resx">
+      <DependentUpon>201810242112127_TaskManagmentTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

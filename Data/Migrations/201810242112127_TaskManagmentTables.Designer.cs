@@ -13,7 +13,7 @@ namespace Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201810232124130_TaskManagmentTables"; }
+            get { return "201810242112127_TaskManagmentTables"; }
         }
         
         string IMigrationMetadata.Source
