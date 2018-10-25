@@ -102,5 +102,25 @@ namespace TaskManagment.Controllers
             userService.EditUser(User);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ActionResult DeactivatePartialView(int ID)
+        {
+            User User = userService.GetUserByID(ID);
+            UserViewModel viewModelUser = Mapper.Map<User, UserViewModel>(User);
+            return PartialView(viewModelUser);
+        }
+
+        [HttpGet]
+        public ActionResult DeactivateUser(int ID)
+        {
+            userService.DeactivateUser(ID);
+            IEnumerable<UserViewModel> viewModelUser;
+            IEnumerable<User> Users;
+
+            Users = userService.GetUsers();
+            viewModelUser = Mapper.Map<IEnumerable<User>, IEnumerable<UserViewModel>>(Users);
+            return View("Index", viewModelUser);
+        }
     }
 }

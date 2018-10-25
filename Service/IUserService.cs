@@ -13,6 +13,7 @@ namespace Service
         User GetUserByID(int ID);
         void CreateUser(User User);
         void EditUser(User User);
+        void DeactivateUser(int ID);
         void SaveUser();
     }
 }

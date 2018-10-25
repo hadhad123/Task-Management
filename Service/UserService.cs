@@ -70,6 +70,15 @@ namespace Service
             SaveUser();
         }
 
+        public void DeactivateUser(int ID)
+        {
+            User User = UserRepository.GetByID(ID);
+            User.Active = !User.Active;
+            User.Role = null;
+            User.Tasks = null;
+            UserRepository.Edit(ID, User);
+            SaveUser();
+        }
         public void SaveUser()
         {
             unitOfWork.Commit();
