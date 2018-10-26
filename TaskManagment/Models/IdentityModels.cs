@@ -31,5 +31,7 @@ namespace TaskManagment.Models
         }
 
         public System.Data.Entity.DbSet<TaskManagment.ViewModels.UserViewModel> UserViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<TaskManagment.ViewModels.TaskViewModel> TaskViewModels { get; set; }
     }
 }

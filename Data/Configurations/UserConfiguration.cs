@@ -16,6 +16,9 @@ namespace Data.Configurations
             Property(u => u.RoleID).IsRequired();
             Property(u => u.HashedPassword).IsRequired().HasMaxLength(200);
             Property(u => u.Salt).IsRequired().HasMaxLength(200);
+
+            HasMany(u => u.Tasks).WithRequired(s => s.AssignedUser).HasForeignKey(s => s.AssignedUserID);
+            HasMany(u => u.CreatedTasks).WithRequired(s => s.User).HasForeignKey(s => s.UserID);
         }
     }
 }

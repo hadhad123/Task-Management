@@ -54,13 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EncryptionService.cs" />
-    <Compile Include="IEncryptionService.cs" />
-    <Compile Include="IRoleService.cs" />
-    <Compile Include="IUserService.cs" />
+    <Compile Include="interfaces\ITaskService.cs" />
+    <Compile Include="interfaces\ITaskStatusService.cs" />
+    <Compile Include="services\EncryptionService.cs" />
+    <Compile Include="interfaces\IEncryptionService.cs" />
+    <Compile Include="interfaces\IRoleService.cs" />
+    <Compile Include="interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RoleService.cs" />
-    <Compile Include="UserService.cs" />
+    <Compile Include="services\RoleService.cs" />
+    <Compile Include="services\TaskService.cs" />
+    <Compile Include="services\TaskStatusService.cs" />
+    <Compile Include="services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

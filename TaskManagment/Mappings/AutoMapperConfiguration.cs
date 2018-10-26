@@ -16,6 +16,8 @@ namespace TaskManagment.Mappings
             {
                 ConfiguremodelToViewModel(cfg);
                 ConfigureViewModelToModel(cfg);
+                ConfigureTaskmodelToViewModel(cfg);
+                ConfigureTaskViewModelToModel(cfg);
 
             });
         }
@@ -37,6 +39,25 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.Active, m => m.MapFrom(a => a.Active))
                   .ForMember(x => x.HashedPassword, m => m.MapFrom(a => a.HashedPassword))
                   .ForMember(x => x.Salt, opt => opt.Ignore());
+
+        }
+
+        private void ConfigureTaskmodelToViewModel(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Task, TaskViewModel>()
+                  .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
+                  .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
+                  .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
+
+        }
+        private void ConfigureTaskViewModelToModel(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<TaskViewModel, Task>()
+                  .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
+                  .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
+                  .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
 
         }
 

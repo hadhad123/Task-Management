@@ -1,23 +1,25 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 
-namespace Model
+namespace TaskManagment.ViewModels
 {
-    public class Task: IEntityBase
+    public class TaskViewModel
     {
-        public Task()
-        {
-            Comments = new List<Comment>();
-        }
         public int ID { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public int TaskStatusID { get; set; }
+        [Required]
         public int UserID { get; set; }
+        [Required]
         public int AssignedUserID { get; set; }
         public TaskStatus TaskStatus { get; set; }
         public User User { get; set; }
         public User AssignedUser { get; set; }
-        public List<Comment> Comments { get; set; }
     }
 }

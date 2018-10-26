@@ -14,6 +14,7 @@ namespace Data.Configurations
             Property(c => c.CommentDescription).IsRequired().HasMaxLength(250);
             Property(c => c.TaskID).IsRequired();
             Property(c => c.UserID).IsRequired();
+            Property(c => c.ParentCommentID).IsOptional();
         }
     }
 }

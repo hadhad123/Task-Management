@@ -12,9 +12,9 @@ namespace Data.Configurations
         public TaskConfiguration()
         {
             Property(t => t.Description).IsRequired().HasMaxLength(250);
-            Property(t => t.CreatedBy).IsRequired();
-            Property(t => t.AssignedTo).IsRequired();
-            Property(t => t.StatusID).IsRequired();
+            Property(t => t.UserID).IsRequired();
+            Property(t => t.AssignedUserID).IsRequired();
+            Property(t => t.TaskStatusID).IsRequired();
         }
     }
 }

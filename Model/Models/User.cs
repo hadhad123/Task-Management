@@ -9,6 +9,7 @@ namespace Model
         public User()
         {
             Tasks = new List<Task>();
+            CreatedTasks = new List<Task>();
         }
         public int ID { get; set; }
         public string UserName { get; set; }
@@ -19,6 +20,7 @@ namespace Model
         public bool Active { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Task> CreatedTasks { get; set; }
 
     }
 }

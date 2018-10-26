@@ -10,7 +10,7 @@ namespace Data.Repositories
 {
     public interface IEntityBaseRepository<T> where T : class, IEntityBase, new()
     {
-        IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties);
+        IQueryable<T> GetAllWithIncludes(List<string> includes);
         IQueryable<T> All { get; }
         IQueryable<T> GetAll();
         T GetByID(int id);

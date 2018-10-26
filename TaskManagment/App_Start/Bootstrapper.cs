@@ -32,14 +32,36 @@ namespace TaskManagment.App_Start
             builder.RegisterType<DbFactory>().As<IDbFactory>().InstancePerRequest();
 
 
-            // Repositories
-            builder.RegisterAssemblyTypes(typeof(UserRepository).Assembly)
-                .Where(t => t.Name.EndsWith("Repository"))
-                .AsImplementedInterfaces().InstancePerRequest();
+            //// Repositories
+            //builder.RegisterAssemblyTypes(typeof(UserRepository).Assembly)
+            //    .Where(t => t.Name.EndsWith("Repository"))
+            //    .AsImplementedInterfaces().InstancePerRequest();
+            //// Services
+            //builder.RegisterAssemblyTypes(typeof(UserService).Assembly)
+            //   .Where(t => t.Name.EndsWith("Service"))
+            //   .AsImplementedInterfaces().InstancePerRequest();
+
+            //Repositories
+            builder.RegisterType<UserRepository>()
+                   .As<IUserRepository>().InstancePerRequest();
+            builder.RegisterType<TaskRepository>()
+                    .As<ITaskRepository>().InstancePerRequest();
+            builder.RegisterType<TaskStatusRepository>()
+                   .As<ITaskStatusRepository>().InstancePerRequest();
+            builder.RegisterType<RoleRepository>()
+                   .As<IRoleRepository>().InstancePerRequest();
+
             // Services
-            builder.RegisterAssemblyTypes(typeof(UserService).Assembly)
-               .Where(t => t.Name.EndsWith("Service"))
-               .AsImplementedInterfaces().InstancePerRequest();
+            builder.RegisterType<UserService>()
+               .As<IUserService>().InstancePerRequest();
+            builder.RegisterType<TaskService>()
+              .As<ITaskService>().InstancePerRequest();
+            builder.RegisterType<TaskStatusService>()
+              .As<ITaskStatusService>().InstancePerRequest();
+            builder.RegisterType<RoleService>()
+              .As<IRoleService>().InstancePerRequest();
+            builder.RegisterType<EncryptionService>()
+             .As<IEncryptionService>().InstancePerRequest();
 
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

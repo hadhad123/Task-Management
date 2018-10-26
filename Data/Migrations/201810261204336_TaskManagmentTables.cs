@@ -15,12 +15,15 @@ namespace Data.Migrations
                         CommentDescription = c.String(nullable: false, maxLength: 250),
                         UserID = c.Int(nullable: false),
                         TaskID = c.Int(nullable: false),
+                        ParentCommentID = c.Int(),
                     })
                 .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Comment", t => t.ParentCommentID)
                 .ForeignKey("dbo.Task", t => t.TaskID)
                 .ForeignKey("dbo.User", t => t.UserID)
                 .Index(t => t.UserID)
-                .Index(t => t.TaskID);
+                .Index(t => t.TaskID)
+                .Index(t => t.ParentCommentID);
             
             CreateTable(
                 "dbo.Task",
@@ -28,23 +31,17 @@ namespace Data.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Description = c.String(nullable: false, maxLength: 250),
-                        StatusID = c.Int(nullable: false),
-                        CreatedBy = c.Int(nullable: false),
-                        AssignedTo = c.Int(nullable: false),
-                        User_ID = c.Int(),
-                        AssignedUser_ID = c.Int(),
-                        CreatedUser_ID = c.Int(),
-                        TaskStatus_ID = c.Int(),
+                        TaskStatusID = c.Int(nullable: false),
+                        UserID = c.Int(nullable: false),
+                        AssignedUserID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.User", t => t.User_ID)
-                .ForeignKey("dbo.User", t => t.AssignedUser_ID)
-                .ForeignKey("dbo.User", t => t.CreatedUser_ID)
-                .ForeignKey("dbo.TaskStatus", t => t.TaskStatus_ID)
-                .Index(t => t.User_ID)
-                .Index(t => t.AssignedUser_ID)
-                .Index(t => t.CreatedUser_ID)
-                .Index(t => t.TaskStatus_ID);
+                .ForeignKey("dbo.User", t => t.UserID)
+                .ForeignKey("dbo.User", t => t.AssignedUserID)
+                .ForeignKey("dbo.TaskStatus", t => t.TaskStatusID)
+                .Index(t => t.TaskStatusID)
+                .Index(t => t.UserID)
+                .Index(t => t.AssignedUserID);
             
             CreateTable(
                 "dbo.User",
@@ -85,17 +82,17 @@ namespace Data.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.Comment", "UserID", "dbo.User");
+            DropForeignKey("dbo.Task", "TaskStatusID", "dbo.TaskStatus");
             DropForeignKey("dbo.Comment", "TaskID", "dbo.Task");
-            DropForeignKey("dbo.Task", "TaskStatus_ID", "dbo.TaskStatus");
-            DropForeignKey("dbo.Task", "CreatedUser_ID", "dbo.User");
-            DropForeignKey("dbo.Task", "AssignedUser_ID", "dbo.User");
-            DropForeignKey("dbo.Task", "User_ID", "dbo.User");
+            DropForeignKey("dbo.Task", "AssignedUserID", "dbo.User");
             DropForeignKey("dbo.User", "RoleID", "dbo.Role");
+            DropForeignKey("dbo.Task", "UserID", "dbo.User");
+            DropForeignKey("dbo.Comment", "ParentCommentID", "dbo.Comment");
             DropIndex("dbo.User", new[] { "RoleID" });
-            DropIndex("dbo.Task", new[] { "TaskStatus_ID" });
-            DropIndex("dbo.Task", new[] { "CreatedUser_ID" });
-            DropIndex("dbo.Task", new[] { "AssignedUser_ID" });
-            DropIndex("dbo.Task", new[] { "User_ID" });
+            DropIndex("dbo.Task", new[] { "AssignedUserID" });
+            DropIndex("dbo.Task", new[] { "UserID" });
+            DropIndex("dbo.Task", new[] { "TaskStatusID" });
+            DropIndex("dbo.Comment", new[] { "ParentCommentID" });
             DropIndex("dbo.Comment", new[] { "TaskID" });
             DropIndex("dbo.Comment", new[] { "UserID" });
             DropTable("dbo.TaskStatus");

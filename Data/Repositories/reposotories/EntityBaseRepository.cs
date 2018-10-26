@@ -46,12 +46,12 @@ namespace Data.Repositories
                 return GetAll();
             }
         }
-        public virtual IQueryable<T> AllIncluding(params Expression<Func<T, object>>[] includeProperties)
+        public virtual IQueryable<T> GetAllWithIncludes(List<string> includes)
         {
             IQueryable<T> query = DbContext.Set<T>();
-            foreach (var includeProperty in includeProperties)
+            foreach (string include in includes)
             {
-                query = query.Include(includeProperty);
+                query = query.Include(include);
             }
             return query;
         }

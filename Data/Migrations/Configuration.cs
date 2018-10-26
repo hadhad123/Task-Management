@@ -19,6 +19,7 @@ namespace Data.Migrations
         {
             //  This method will be called after migrating to the latest version.
             AddRoles(context);
+            AddTaskStatuses(context);
             AddUsers(context);
         }
 
@@ -66,5 +67,36 @@ namespace Data.Migrations
                 
            
         }
+        private void AddTaskStatuses(Data.TaskManagmentContext context)
+        {
+            List<TaskStatus> TaskStatuses = new List<TaskStatus>()
+            {
+                new TaskStatus()
+                {
+                    Status = "Assigned"
+                },
+                new TaskStatus()
+                {
+                    Status = "InProgress"
+                },
+                new TaskStatus()
+                {
+                    Status = "Completed"
+                },
+                new TaskStatus()
+                {
+                    Status = "Closed"
+                }
+            };
+
+            foreach (TaskStatus status in TaskStatuses)
+            {
+                TaskStatus StatusExists = context.TaskStatuses.FirstOrDefault(s => s.Status == status.Status);
+                if (StatusExists == null)
+                    context.TaskStatuses.Add(status);
+            }
+            context.Commit();
+        }
+
     }
 }
