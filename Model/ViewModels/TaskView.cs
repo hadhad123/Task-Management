@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace TaskManagment.ViewModels
+namespace Model.ViewModels
 {
-    public class TaskViewModel
+    public class TaskView
     {
         public int ID { get; set; }
         [Required]

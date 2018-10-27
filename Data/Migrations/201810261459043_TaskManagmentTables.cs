@@ -16,6 +16,7 @@ namespace Data.Migrations
                         UserID = c.Int(nullable: false),
                         TaskID = c.Int(nullable: false),
                         ParentCommentID = c.Int(),
+                        CreationDate = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Comment", t => t.ParentCommentID)

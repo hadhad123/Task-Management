@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Model;
+using Model.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace TaskManagment.Mappings
                 ConfigureViewModelToModel(cfg);
                 ConfigureTaskmodelToViewModel(cfg);
                 ConfigureTaskViewModelToModel(cfg);
+                ConfigureTaskViewToTaskViewModel(cfg);
+                ConfigureTaskViewModelToTaskView(cfg);
 
             });
         }
@@ -59,6 +62,31 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
                   .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
 
+        }
+        private void ConfigureTaskViewToTaskViewModel(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<TaskView, TaskViewModel>()
+                  .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
+                  .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
+                  .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
+                  .ForMember(x => x.ParentComment, m => m.MapFrom(a => a.ParentComment))
+                  .ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
+                  .ForMember(x => x.User, m => m.MapFrom(a => a.User))
+                  .ForMember(x => x.AssignedUser, m => m.MapFrom(a => a.AssignedUser))
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
+
+        }
+        private void ConfigureTaskViewModelToTaskView(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<TaskViewModel, TaskView>()
+                 .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
+                  .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
+                  .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
+                  .ForMember(x => x.ParentComment, m => m.MapFrom(a => a.ParentComment))
+                  .ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
+                  .ForMember(x => x.User, m => m.MapFrom(a => a.User))
+                  .ForMember(x => x.AssignedUser, m => m.MapFrom(a => a.AssignedUser))
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
         }
 
     }

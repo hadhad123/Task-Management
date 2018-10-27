@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Model;
+using Model.ViewModels;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,9 @@ namespace TaskManagment.Controllers
         // GET: Tasks
         public ActionResult Index()
         {
-            IEnumerable<TaskViewModel> viewModelTask;
-            IEnumerable<Task> Tasks;
-
-            Tasks = TaskService.GetTasks();
-            viewModelTask = Mapper.Map<IEnumerable<Task>, IEnumerable<TaskViewModel>>(Tasks);
-            return View(viewModelTask);
+            IEnumerable<TaskView> TaskViews = TaskService.GetTasks();
+            IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
+            return View(Tasks);
         }
 
         public ActionResult Create(int? ID)
@@ -74,6 +72,14 @@ namespace TaskManagment.Controllers
             }
 
             return View(TaskView);
+        }
+
+        [HttpGet]
+        public ActionResult Close (int ID)
+        {
+            IEnumerable<TaskView> TaskViews = TaskService.CloseTask(ID);
+            IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
+            return View("Index",Tasks);
         }
 
     }
