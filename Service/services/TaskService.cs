@@ -14,12 +14,14 @@ namespace Service
     {
         private readonly ITaskRepository TaskRepository;
         private readonly ITaskStatusRepository TaskStatusRepository;
+        private readonly ICommentRepository CommentRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public TaskService(ITaskRepository TaskRepository, ITaskStatusRepository TaskStatusRepository,IUnitOfWork unitOfWork)
+        public TaskService(ITaskRepository TaskRepository, ITaskStatusRepository TaskStatusRepository, ICommentRepository CommentRepository,IUnitOfWork unitOfWork)
         {
             this.TaskRepository = TaskRepository;
             this.TaskStatusRepository = TaskStatusRepository;
+            this.CommentRepository = CommentRepository;
             this.unitOfWork = unitOfWork;
         }
 
@@ -47,6 +49,7 @@ namespace Service
                 NewTaskViews.ChildComments = tsk.Comments.Where(x=>x.ParentCommentID != null).ToList();
                 NewTaskViews.User = tsk.User;
                 NewTaskViews.AssignedUser = tsk.AssignedUser;
+                NewTaskViews.File = tsk.File;
                 TaskViews.Add(NewTaskViews);
             }
             return TaskViews;
@@ -71,6 +74,11 @@ namespace Service
             Task.User = null;
             Task.AssignedUser = null;
             Task.TaskStatus = null;
+
+            Model.Task OldTask = TaskRepository.GetByID(Task.ID);
+            if (OldTask.File != null && Task.File == null)
+                Task.File = OldTask.File;
+
             TaskRepository.Edit(Task.ID, Task);
             SaveTask();
         }
@@ -100,6 +108,23 @@ namespace Service
             return AllTasks;
         }
 
+
+        public List<TaskView> AddComment(CommentView NewComment)
+        {
+            NewComment.CreationDate = DateTime.Now;
+
+            Comment Comment = new Comment()
+            {
+                CommentDescription = NewComment.CommentDescription,
+                UserID = 1, //current logged in user
+                ParentCommentID = NewComment.ParentID,
+                CreationDate = NewComment.CreationDate
+            };
+            CommentRepository.Add(Comment);
+            SaveTask();
+            List<TaskView> Tasks = GetTasks();
+            return Tasks;
+        }
 
     }
 }

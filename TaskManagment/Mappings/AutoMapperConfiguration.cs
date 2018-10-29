@@ -32,6 +32,7 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.Email, m => m.MapFrom(a => a.Email))
                   .ForMember(x => x.Active, m => m.MapFrom(a => a.Active))
                   .ForMember(x => x.HashedPassword, m => m.MapFrom(a => a.HashedPassword));
+                 
 
         }
         private void ConfigureViewModelToModel(IMapperConfigurationExpression cfg)
@@ -51,7 +52,8 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
                   .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
                   .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
-                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID))
+                  .ForMember(x => x.File, m => m.MapFrom(a => a.File));
 
         }
         private void ConfigureTaskViewModelToModel(IMapperConfigurationExpression cfg)
@@ -60,7 +62,8 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
                   .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
                   .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
-                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID))
+                  .ForMember(x => x.File, m => m.MapFrom(a => a.File));
 
         }
         private void ConfigureTaskViewToTaskViewModel(IMapperConfigurationExpression cfg)
@@ -73,7 +76,8 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
                   .ForMember(x => x.User, m => m.MapFrom(a => a.User))
                   .ForMember(x => x.AssignedUser, m => m.MapFrom(a => a.AssignedUser))
-                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID))
+                  .ForMember(x => x.File, m => m.MapFrom(a => a.File));
 
         }
         private void ConfigureTaskViewModelToTaskView(IMapperConfigurationExpression cfg)
@@ -86,7 +90,8 @@ namespace TaskManagment.Mappings
                   .ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
                   .ForMember(x => x.User, m => m.MapFrom(a => a.User))
                   .ForMember(x => x.AssignedUser, m => m.MapFrom(a => a.AssignedUser))
-                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID));
+                  .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID))
+                  .ForMember(x => x.File, m => m.MapFrom(a => a.File));
         }
 
     }

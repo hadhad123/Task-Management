@@ -18,6 +18,7 @@ namespace Model.ViewModels
         public int UserID { get; set; }
         [Required]
         public int AssignedUserID { get; set; }
+        public string File { get; set; }
         public TaskStatus TaskStatus { get; set; }
         public Comment ParentComment { get; set; }
         public List<Comment> ChildComments { get; set; }

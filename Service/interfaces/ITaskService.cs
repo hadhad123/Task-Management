@@ -17,5 +17,6 @@ namespace Service
         void DeleteTask(int ID);
         void SaveTask();
         List<TaskView> CloseTask(int ID);
+        List<TaskView> AddComment(CommentView NewComment);
     }
 }

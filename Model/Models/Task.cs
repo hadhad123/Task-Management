@@ -15,6 +15,7 @@ namespace Model
         public int TaskStatusID { get; set; }
         public int UserID { get; set; }
         public int AssignedUserID { get; set; }
+        public string File { get; set; }
         public TaskStatus TaskStatus { get; set; }
         public User User { get; set; }
         public User AssignedUser { get; set; }

@@ -50,6 +50,8 @@ namespace TaskManagment.App_Start
                    .As<ITaskStatusRepository>().InstancePerRequest();
             builder.RegisterType<RoleRepository>()
                    .As<IRoleRepository>().InstancePerRequest();
+            builder.RegisterType<CommentRepository>()
+                  .As<ICommentRepository>().InstancePerRequest();
 
             // Services
             builder.RegisterType<UserService>()

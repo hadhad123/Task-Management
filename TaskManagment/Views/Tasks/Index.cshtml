@@ -62,6 +62,9 @@
             @Html.DisplayNameFor(model => model.AssignedUserID)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.File)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.ParentComment)
         </th>
         <th></th>
@@ -69,53 +72,62 @@
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaskStatus.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
-            </td>
-            <td>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TaskStatus.Status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
+        </td>
+        <td>
+            
+            @if (item.File != null)
+            {
+                @Html.ActionLink(item.File, "DownloadFile", new { id = item.ID })
+            }
 
-                <button class="accordion">
-                    @Html.DisplayFor(modelItem => item.ParentComment.CommentDescription)
-                </button>
+        </td>
+        <td>
 
-                <div class="panel">
-                    @foreach (var child in item.ChildComments)
-                    {
-                        <p>
-                            @Html.DisplayFor(modelItem => child.CommentDescription)
-                        </p>
-                    }
-                    <input type="text" name="newComment" id="newComment" placeholder="reply...">
-                    <button id="sendBtn">Send</button>
-                </div>
+            <button class="accordion">
+                @Html.DisplayFor(modelItem => item.ParentComment.CommentDescription)
+            </button>
 
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Create", new { id = item.ID }) |
-
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
-
-                @if (item.TaskStatus.Status != "Closed")
+            <div class="panel">
+                @foreach (var child in item.ChildComments)
                 {
-                    @Html.ActionLink("Close", "Close", new { id = item.ID })
-                }
-                else
-                {
-                    <p> Closed</p>
-                }
+                    <p>
+                        @Html.DisplayFor(modelItem => child.CommentDescription)
+                    </p>
+                    <input type="text" name="newComment" id="newComment-@child.ID" placeholder="reply...">
+                    <button id="sendBtn" onclick="addComment('@child.TaskID','@child.ID')">Send</button>
 
-            </td>
-        </tr>
+                }
+            </div>
+
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Create", new { id = item.ID }) |
+
+            @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
+
+            @if (item.TaskStatus.Status != "Closed")
+            {
+                @Html.ActionLink("Close", "Close", new { id = item.ID })
+            }
+            else
+            {
+                <p> Closed</p>
+            }
+
+        </td>
+    </tr>
     }
 
 </table>
@@ -139,29 +151,58 @@
         });
     }
 
+    function addComment(TaskID, ParentID) {
+        var comment = "newComment-" + ParentID
+        var CommentDescription = document.getElementById(comment).value;
+        var ParentID = ParentID;
+        var TaskID = TaskID;
 
-    $("#sendBtn").click(function () {
-        var CommentDescription = document.getElementById("newComment").value;
-        var ParentID = item.ParentID;
-        var TaskID = item.TaskID;
-        var UserID = item.UserID;
-        var CreationDate = new Date();
+        var CommentObj =
+        {
+            CommentDescription : CommentDescription,
+            ParentID: ParentID,
+            TaskID: TaskID
+        }
+        console.log(CommentObj)
+        SendAjaxRequest(CommentObj)
+
+    }
+
+    function SendAjaxRequest(CommentObj) {
+        //$.post(URL, data, function (data, status, xhr), dataType)
+        console.log(CommentObj)
+        //$.ajax({
+        //    url: '/Tasks/AddComment',
+        //    contentType: 'application/json; charset=utf-8',
+        //    data: CommentObj,
+        //    type: 'POST',
+        //    dataType: 'json'
+
+        //})
+        //    .success(function (result) {
+        //        console.log(result)
+        //    })
+        //    .error(function (xhr, status) {
+        //        alert(status);
+        //    })
 
         $.ajax({
-            url: '/Comments/AddComment',
-            contentType: 'application/html; charset=utf-8',
-            data: { CommentDescription: CommentDescription, ParentID: ParentID, TaskID = TaskID, UserID = UserID, CreationDate = CreationDate  },
-            type: 'POST',
-            dataType: 'html'
+            url: '/Tasks/AddComment',
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(CommentObj),
 
-        })
-            .success(function (result) {
-               // $('#products').html(result);
-            })
-            .error(function (xhr, status) {
-                alert(status);
-            })
-    });
+            success: function (result) {
+                console.log(result);
+            },
+
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+
+    }
 
 
 </script>

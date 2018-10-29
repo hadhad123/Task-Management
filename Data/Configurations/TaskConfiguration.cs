@@ -15,6 +15,7 @@ namespace Data.Configurations
             Property(t => t.UserID).IsRequired();
             Property(t => t.AssignedUserID).IsRequired();
             Property(t => t.TaskStatusID).IsRequired();
+            Property(t => t.File).IsOptional();
         }
     }
 }

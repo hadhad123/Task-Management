@@ -4,6 +4,7 @@ using Model.ViewModels;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -51,10 +52,19 @@ namespace TaskManagment.Controllers
 
         // POST: TaskViewModels/Create/ID
         [HttpPost]
-        public ActionResult Create(TaskViewModel TaskView, int? ID)
+        public ActionResult Create(TaskViewModel TaskView, int? ID, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                //upload File
+                if (file !=null)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Uploads"), fileName);
+                    file.SaveAs(path);
+                    TaskView.File = path;
+                }
+
                 if (ID == null) //add
                 {
                     Task Task;
@@ -67,8 +77,7 @@ namespace TaskManagment.Controllers
                     TaskService.EditTask(Task);
                 }
 
-
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
             }
 
             return View(TaskView);
@@ -80,6 +89,24 @@ namespace TaskManagment.Controllers
             IEnumerable<TaskView> TaskViews = TaskService.CloseTask(ID);
             IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
             return View("Index",Tasks);
+        }
+
+        [HttpPost]
+        public List<TaskViewModel> AddComment(CommentView NewComment)
+        {
+            IEnumerable<TaskView> TaskViews = TaskService.AddComment(NewComment);
+            IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
+            return Tasks.ToList();
+        }
+
+        [HttpGet]
+        public ActionResult DownloadFile(int ID)
+        {
+            string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";
+            Task Task = TaskService.GetTaskByID(ID);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path + Task.File);
+            string fileName = Task.File;
+            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
         }
 
     }
