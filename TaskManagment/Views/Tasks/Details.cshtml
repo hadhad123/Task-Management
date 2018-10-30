@@ -43,7 +43,11 @@
             @Html.DisplayName("Attachment")
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.File)
+            @if (Model.File != null)
+            {
+                @Html.ActionLink(Model.File, "DownloadFile", new { id = Model.ID })
+            }
+            
         </dd>
 
     </dl>

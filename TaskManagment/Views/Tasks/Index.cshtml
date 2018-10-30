@@ -43,33 +43,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Tasks</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new {}, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TaskStatusID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AssignedUserID)
-        </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.File)
-        </th>
-        <th>
-           
-        </th>*@
-        <th></th>
-    </tr>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Task Description")
+            </th>
+            <th>
+                @Html.DisplayName("Status")
+            </th>
+            <th>
+                @Html.DisplayName("Created by")
+            </th>
+            <th>
+                @Html.DisplayName("Assigned To")
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    
 
     @foreach (var item in Model)
     {
@@ -86,54 +84,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
             </td>
-            @*<td>
 
-                @if (item.File != null)
-                {
-                    @Html.ActionLink(item.File, "DownloadFile", new { id = item.ID })
-                }
-
-            </td>*@
-            @*<td>
-
-
-
-                @foreach (var comment in item.Comments)
-                {
-
-                    <div>@comment.CommentDescription</div>
-                    <ul>
-
-                        @foreach (var reply in comment.Replies)
-                        {
-                            <li>@reply.CommentDescription</li>
-                        }
-                        <li>
-                            <input type="text" name="newComment" id="newReply-@comment.ID" placeholder="reply...">
-                            <button id="sendBtn" onclick="addComment('@comment.TaskID','@comment.ID','#newReply-@comment.ID')">Send</button>
-                        </li>
-
-                    </ul>
-
-                }
-                <input type="text" name="newComment" id="newComment-@item.ID" placeholder="comment...">
-                <button id="sendBtn" onclick="addComment('@item.ID',null,'#newComment-@item.ID')">Send</button>
-
-
-            </td>*@
             <td>
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Edit", "Create", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Edit", "Create", new { id = item.ID }, new { @class = "btn btn-primary" }) |
 
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }, new { @class = "btn btn-danger" }) |
 
                 @if (item.TaskStatus.Status != "Closed")
                 {
-                    @Html.ActionLink("Close", "Close", new { id = item.ID })
+                    @Html.ActionLink("Close", "Close", new { id = item.ID }, new { @class = "btn btn-warning" })
                 }
                 else
                 {
-                    <p> Closed</p>
+                    <button class="btn btn-warning" disabled>Closed</button>
                 }
 
             </td>

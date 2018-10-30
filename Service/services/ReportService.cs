@@ -9,22 +9,33 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Service.services
+namespace Service
 {
-   public class ReportService
+   public class ReportService : IReportService
     {
-        public void DownloadReport()
+        private string ConnectionString;
+        public ReportService()
         {
-            Report report = new Report();
-            MemoryStream stream = new MemoryStream();
-            report.ExportDocument(StiExportFormat.Pdf, stream);
+            ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["TaskManagmentContext"].ConnectionString;
+        }
+        public byte[] DownloadReport()
+        {
+            Report Report = new Report();
+          
+            Report.Dictionary.Databases.Clear();
+            Report.Dictionary.Databases.Add(new Stimulsoft.Report.Dictionary.StiSqlDatabase("Connection", "Connection", ConnectionString, false));
+            Report.Render(false);
 
+            System.IO.MemoryStream memoryStream = new System.IO.MemoryStream();
+  
+            Report.ExportDocument(Stimulsoft.Report.StiExportFormat.Pdf, memoryStream);
+            //Report.ExportDocument(Stimulsoft.Report.StiExportFormat.Excel, memoryStream);
 
-            HttpContext.Current.Response.Clear();
-            HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=Emad.xlsx");
-            HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            HttpContext.Current.Response.BinaryWrite(stream.ToArray());
-            HttpContext.Current.Response.End();
+            byte[] fileBytes = memoryStream.ToArray();
+            memoryStream.Flush();
+            memoryStream.Close();
+            return fileBytes;
+
         }
     }
 }

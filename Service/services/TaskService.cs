@@ -78,12 +78,7 @@ namespace Service
 
         public void CreateTask(Model.Task Task)
         {
-            if(Task.File != null)
-            {
-                string[] lines = Regex.Split(Task.File, "\r\n");
-                Task.File = lines[lines.Count() - 1];
-            }
-         
+
             Task.UserID = 1; //created by
             TaskRepository.Add(Task);
             SaveTask();

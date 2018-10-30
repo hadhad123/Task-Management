@@ -60,7 +60,9 @@ namespace TaskManagment.Controllers
                     var fileName = Path.GetFileName(file.FileName);
                     var path = Path.Combine(Server.MapPath("~/Uploads"), fileName);
                     file.SaveAs(path);
-                    TaskView.File = path;
+
+                    fileName = Path.GetFileName(path);
+                    TaskView.File = fileName;
                 }
 
                 if (ID == null) //add

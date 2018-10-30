@@ -55,7 +55,7 @@
     <Compile Include="Models\TaskStatus.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ViewModels\CommentView.cs" />
-    <Compile Include="ViewModels\TaskView.cs" />
+    <Compile Include="ViewModels\TaskViewModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

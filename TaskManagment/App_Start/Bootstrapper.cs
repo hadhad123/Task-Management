@@ -64,6 +64,8 @@ namespace TaskManagment.App_Start
               .As<IRoleService>().InstancePerRequest();
             builder.RegisterType<EncryptionService>()
              .As<IEncryptionService>().InstancePerRequest();
+            builder.RegisterType<ReportService>()
+          .As<IReportService>().InstancePerRequest();
 
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
