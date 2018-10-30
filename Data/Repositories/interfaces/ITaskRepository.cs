@@ -9,5 +9,6 @@ namespace Data.Repositories
 {
     public interface ITaskRepository : IEntityBaseRepository<Model.Task>
     {
+        Model.Task GetTaskDetails(int ID);
     }
 }

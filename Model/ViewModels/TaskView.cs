@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Model.ViewModels
 {
-    public class TaskView
+    public class TaskViewModel
     {
         public int ID { get; set; }
         [Required]
@@ -20,9 +20,15 @@ namespace Model.ViewModels
         public int AssignedUserID { get; set; }
         public string File { get; set; }
         public TaskStatus TaskStatus { get; set; }
-        public Comment ParentComment { get; set; }
-        public List<Comment> ChildComments { get; set; }
+        public List<Comment> Comments{ get; set; }
+        //public List<Comment> ChildComments { get; set; }
         public User User { get; set; }
         public User AssignedUser { get; set; }
+
+
+        public TaskViewModel()
+        {
+            Comments = new List<Comment>();
+        }
     }
 }

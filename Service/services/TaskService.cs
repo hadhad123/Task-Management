@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Service
@@ -25,28 +26,29 @@ namespace Service
             this.unitOfWork = unitOfWork;
         }
 
-        public List<TaskView> GetTasks()
+        public List<TaskViewModel> GetTasks()
         {
             List<string> Includes = new List<string>();
             Includes.Add("User");
             Includes.Add("AssignedUser");
             Includes.Add("TaskStatus");
             Includes.Add("Comments");
+            Includes.Add("Comments.Replies");
 
             List<Model.Task> Tasks = TaskRepository.GetAllWithIncludes(Includes).ToList();
-            List<TaskView> TaskViews = new List<TaskView>();
+            List<TaskViewModel> TaskViews = new List<TaskViewModel>();
          
             foreach(Model.Task tsk in Tasks)
             {
-                TaskView NewTaskViews = new TaskView();
+                TaskViewModel NewTaskViews = new TaskViewModel();
                 NewTaskViews.ID = tsk.ID;
                 NewTaskViews.Description = tsk.Description;
                 NewTaskViews.TaskStatusID = tsk.TaskStatusID;
                 NewTaskViews.UserID = tsk.UserID;
                 NewTaskViews.AssignedUserID = tsk.AssignedUserID;
                 NewTaskViews.TaskStatus = tsk.TaskStatus;
-                NewTaskViews.ParentComment = tsk.Comments.Where(x => x.ParentCommentID == null).FirstOrDefault();
-                NewTaskViews.ChildComments = tsk.Comments.Where(x=>x.ParentCommentID != null).ToList();
+                NewTaskViews.Comments = tsk.Comments.Where(x => x.ParentCommentID == null).ToList();
+                //NewTaskViews.ChildComments = tsk.Comments.Where(x=>x.ParentCommentID != null).ToList();
                 NewTaskViews.User = tsk.User;
                 NewTaskViews.AssignedUser = tsk.AssignedUser;
                 NewTaskViews.File = tsk.File;
@@ -55,15 +57,33 @@ namespace Service
             return TaskViews;
         }
 
-        public Model.Task GetTaskByID(int ID)
+        public TaskViewModel GetTaskByID(int ID)
         {
-            Model.Task Task = TaskRepository.GetByID(ID);
-            return Task;
+            Model.Task Task = TaskRepository.GetTaskDetails(ID);
+            TaskViewModel TaskViewModel = new TaskViewModel()
+            {
+                ID = Task.ID,
+                Description = Task.Description, 
+                TaskStatusID = Task.TaskStatusID,
+                TaskStatus = Task.TaskStatus,
+                UserID = Task.UserID,
+                User = Task.User,
+                AssignedUserID = Task.AssignedUserID,
+                AssignedUser = Task.AssignedUser,
+                File = Task.File,
+                Comments = Task.Comments
+            };
+            return TaskViewModel;
         }
 
         public void CreateTask(Model.Task Task)
         {
-
+            if(Task.File != null)
+            {
+                string[] lines = Regex.Split(Task.File, "\r\n");
+                Task.File = lines[lines.Count() - 1];
+            }
+         
             Task.UserID = 1; //created by
             TaskRepository.Add(Task);
             SaveTask();
@@ -94,7 +114,7 @@ namespace Service
             unitOfWork.Commit();
         }
 
-        public List<TaskView> CloseTask(int ID)
+        public List<TaskViewModel> CloseTask(int ID)
         {
             Model.Task Task = TaskRepository.GetByID(ID);
             Task.User = null;
@@ -104,25 +124,25 @@ namespace Service
             TaskRepository.Edit(Task.ID, Task);
             SaveTask();
 
-            List<TaskView> AllTasks = GetTasks();
+            List<TaskViewModel> AllTasks = GetTasks();
             return AllTasks;
         }
 
 
-        public List<TaskView> AddComment(CommentView NewComment)
+        public List<TaskViewModel> AddComment(CommentView NewComment)
         {
-            NewComment.CreationDate = DateTime.Now;
-
             Comment Comment = new Comment()
             {
                 CommentDescription = NewComment.CommentDescription,
                 UserID = 1, //current logged in user
-                ParentCommentID = NewComment.ParentID,
-                CreationDate = NewComment.CreationDate
+                ParentCommentID = NewComment.ParentID==0?null : NewComment.ParentID,
+                CreationDate = DateTime.Now,
+                TaskID= NewComment.TaskID
+
             };
             CommentRepository.Add(Comment);
             SaveTask();
-            List<TaskView> Tasks = GetTasks();
+            List<TaskViewModel> Tasks = GetTasks();
             return Tasks;
         }
 

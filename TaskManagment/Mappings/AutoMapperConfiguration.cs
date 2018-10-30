@@ -68,12 +68,12 @@ namespace TaskManagment.Mappings
         }
         private void ConfigureTaskViewToTaskViewModel(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<TaskView, TaskViewModel>()
+            cfg.CreateMap<TaskViewModel, TaskViewModel>()
                   .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
                   .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
                   .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
-                  .ForMember(x => x.ParentComment, m => m.MapFrom(a => a.ParentComment))
-                  .ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
+                  //.ForMember(x => x.ParentComment, m => m.MapFrom(a => a.ParentComment))
+                  //.ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
                   .ForMember(x => x.User, m => m.MapFrom(a => a.User))
                   .ForMember(x => x.AssignedUser, m => m.MapFrom(a => a.AssignedUser))
                   .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID))
@@ -82,12 +82,12 @@ namespace TaskManagment.Mappings
         }
         private void ConfigureTaskViewModelToTaskView(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<TaskViewModel, TaskView>()
+            cfg.CreateMap<TaskViewModel, TaskViewModel>()
                  .ForMember(x => x.Description, m => m.MapFrom(a => a.Description))
                   .ForMember(x => x.TaskStatusID, m => m.MapFrom(a => a.TaskStatusID))
                   .ForMember(x => x.UserID, m => m.MapFrom(a => a.UserID))
-                  .ForMember(x => x.ParentComment, m => m.MapFrom(a => a.ParentComment))
-                  .ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
+                  //.ForMember(x => x.ParentComment, m => m.MapFrom(a => a.ParentComment))
+                  //.ForMember(x => x.ChildComments, m => m.MapFrom(a => a.ChildComments))
                   .ForMember(x => x.User, m => m.MapFrom(a => a.User))
                   .ForMember(x => x.AssignedUser, m => m.MapFrom(a => a.AssignedUser))
                   .ForMember(x => x.AssignedUserID, m => m.MapFrom(a => a.AssignedUserID))

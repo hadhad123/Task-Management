@@ -70,6 +70,10 @@
     <Compile Include="Migrations\201810282347288_Added_File_to_Tasks.Designer.cs">
       <DependentUpon>201810282347288_Added_File_to_Tasks.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201810291824013_fffff.cs" />
+    <Compile Include="Migrations\201810291824013_fffff.Designer.cs">
+      <DependentUpon>201810291824013_fffff.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\interfaces\ICommentRepository.cs" />
@@ -96,6 +100,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810282347288_Added_File_to_Tasks.resx">
       <DependentUpon>201810282347288_Added_File_to_Tasks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201810291824013_fffff.resx">
+      <DependentUpon>201810291824013_fffff.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

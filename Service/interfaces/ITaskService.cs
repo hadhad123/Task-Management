@@ -10,13 +10,13 @@ namespace Service
 {
     public interface ITaskService
     {
-        List<TaskView> GetTasks();
-        Model.Task GetTaskByID(int ID);
+        List<TaskViewModel> GetTasks();
+        TaskViewModel GetTaskByID(int ID);
         void CreateTask(Model.Task Task);
         void EditTask(Model.Task Task);
         void DeleteTask(int ID);
         void SaveTask();
-        List<TaskView> CloseTask(int ID);
-        List<TaskView> AddComment(CommentView NewComment);
+        List<TaskViewModel> CloseTask(int ID);
+        List<TaskViewModel> AddComment(CommentView NewComment);
     }
 }

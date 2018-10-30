@@ -9,7 +9,7 @@ namespace Model.ViewModels
     public class CommentView
     {
         public string CommentDescription { get; set; }
-        public int ParentID { get; set; }
+        public int? ParentID { get; set; }
         public int TaskID { get; set; }
         public DateTime CreationDate { get; set; }
     }

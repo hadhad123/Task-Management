@@ -1,4 +1,5 @@
-﻿@model IEnumerable<TaskManagment.ViewModels.TaskViewModel>
+﻿@using Model.ViewModels
+@model IEnumerable<TaskViewModel>
 <style>
     .accordion {
         background-color: #eee;
@@ -61,148 +62,147 @@
         <th>
             @Html.DisplayNameFor(model => model.AssignedUserID)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.File)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ParentComment)
-        </th>
+           
+        </th>*@
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TaskStatus.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
-        </td>
-        <td>
-            
-            @if (item.File != null)
-            {
-                @Html.ActionLink(item.File, "DownloadFile", new { id = item.ID })
-            }
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskStatus.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssignedUser.UserName)
+            </td>
+            @*<td>
 
-        </td>
-        <td>
-
-            <button class="accordion">
-                @Html.DisplayFor(modelItem => item.ParentComment.CommentDescription)
-            </button>
-
-            <div class="panel">
-                @foreach (var child in item.ChildComments)
+                @if (item.File != null)
                 {
-                    <p>
-                        @Html.DisplayFor(modelItem => child.CommentDescription)
-                    </p>
-                    <input type="text" name="newComment" id="newComment-@child.ID" placeholder="reply...">
-                    <button id="sendBtn" onclick="addComment('@child.TaskID','@child.ID')">Send</button>
+                    @Html.ActionLink(item.File, "DownloadFile", new { id = item.ID })
+                }
+
+            </td>*@
+            @*<td>
+
+
+
+                @foreach (var comment in item.Comments)
+                {
+
+                    <div>@comment.CommentDescription</div>
+                    <ul>
+
+                        @foreach (var reply in comment.Replies)
+                        {
+                            <li>@reply.CommentDescription</li>
+                        }
+                        <li>
+                            <input type="text" name="newComment" id="newReply-@comment.ID" placeholder="reply...">
+                            <button id="sendBtn" onclick="addComment('@comment.TaskID','@comment.ID','#newReply-@comment.ID')">Send</button>
+                        </li>
+
+                    </ul>
 
                 }
-            </div>
+                <input type="text" name="newComment" id="newComment-@item.ID" placeholder="comment...">
+                <button id="sendBtn" onclick="addComment('@item.ID',null,'#newComment-@item.ID')">Send</button>
 
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Create", new { id = item.ID }) |
 
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
+            </td>*@
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Edit", "Create", new { id = item.ID }) |
 
-            @if (item.TaskStatus.Status != "Closed")
-            {
-                @Html.ActionLink("Close", "Close", new { id = item.ID })
-            }
-            else
-            {
-                <p> Closed</p>
-            }
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID }) |
 
-        </td>
-    </tr>
+                @if (item.TaskStatus.Status != "Closed")
+                {
+                    @Html.ActionLink("Close", "Close", new { id = item.ID })
+                }
+                else
+                {
+                    <p> Closed</p>
+                }
+
+            </td>
+        </tr>
     }
 
 </table>
 
-<script src="/Scripts/jquery-3.3.1.js"></script>
-<script src="/Scripts/jquery.validate.js"></script>
-<script src="/Scripts/jquery.validate.unobtrusive.js"></script>
-<script>
-    var acc = document.getElementsByClassName("accordion");
-    var i;
 
-    for (i = 0; i < acc.length; i++) {
-        acc[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            var panel = this.nextElementSibling;
-            if (panel.style.maxHeight) {
-                panel.style.maxHeight = null;
-            } else {
-                panel.style.maxHeight = panel.scrollHeight + "px";
-            }
-        });
-    }
+@section scripts
+{
 
-    function addComment(TaskID, ParentID) {
-        var comment = "newComment-" + ParentID
-        var CommentDescription = document.getElementById(comment).value;
-        var ParentID = ParentID;
-        var TaskID = TaskID;
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        var i;
 
-        var CommentObj =
-        {
-            CommentDescription : CommentDescription,
-            ParentID: ParentID,
-            TaskID: TaskID
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
         }
-        console.log(CommentObj)
-        SendAjaxRequest(CommentObj)
 
-    }
+        function addComment(TaskID, ParentID,query) {
 
-    function SendAjaxRequest(CommentObj) {
-        //$.post(URL, data, function (data, status, xhr), dataType)
-        console.log(CommentObj)
-        //$.ajax({
-        //    url: '/Tasks/AddComment',
-        //    contentType: 'application/json; charset=utf-8',
-        //    data: CommentObj,
-        //    type: 'POST',
-        //    dataType: 'json'
+            var value = $(query).first().val();
+            var CommentDescription = value;
+            var ParentID = ParentID;
+            var TaskID = TaskID;
 
-        //})
-        //    .success(function (result) {
-        //        console.log(result)
-        //    })
-        //    .error(function (xhr, status) {
-        //        alert(status);
-        //    })
-
-        $.ajax({
-            url: '/Tasks/AddComment',
-            type: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(CommentObj),
-
-            success: function (result) {
-                console.log(result);
-            },
-
-            error: function (xhr, resp, text) {
-                console.log(xhr, resp, text);
+            var CommentObj =
+            {
+                CommentDescription: CommentDescription,
+                ParentID: ParentID,
+                TaskID: TaskID
             }
-        });
+            console.log(CommentObj)
+            SendAjaxRequest(CommentObj)
 
-    }
+        }
+
+        function SendAjaxRequest(CommentObj) {
+            console.log(CommentObj)
+
+            $.ajax({
+                url: '/Tasks/AddComment',
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(CommentObj),
+
+                success: function (result) {
+                    console.log(result);
+                },
+
+                error: function (xhr, resp, text) {
+                    console.log(xhr, resp, text);
+                }
+            });
+
+        }
 
 
-</script>
+    </script>
+}
+
+

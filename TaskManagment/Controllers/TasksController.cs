@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using TaskManagment.ViewModels;
 
 namespace TaskManagment.Controllers
 {
@@ -26,10 +25,10 @@ namespace TaskManagment.Controllers
         }
         // GET: Tasks
         public ActionResult Index()
+
         {
-            IEnumerable<TaskView> TaskViews = TaskService.GetTasks();
-            IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
-            return View(Tasks);
+            IEnumerable<TaskViewModel> TaskViews = TaskService.GetTasks();
+            return View(TaskViews);
         }
 
         public ActionResult Create(int? ID)
@@ -42,9 +41,8 @@ namespace TaskManagment.Controllers
 
             if (ID != null) //edit
             {
-                Task Task = TaskService.GetTaskByID(ID ?? 0);
-                TaskViewModel TaskView = Mapper.Map<Task, TaskViewModel>(Task);
-                return View(TaskView);
+                TaskViewModel Task = TaskService.GetTaskByID(ID ?? 0);
+                return View(Task);
             }
              return View();
 
@@ -86,27 +84,31 @@ namespace TaskManagment.Controllers
         [HttpGet]
         public ActionResult Close (int ID)
         {
-            IEnumerable<TaskView> TaskViews = TaskService.CloseTask(ID);
-            IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
-            return View("Index",Tasks);
+            IEnumerable<TaskViewModel> TaskViews = TaskService.CloseTask(ID);
+            return View("Index", TaskViews);
         }
 
         [HttpPost]
         public List<TaskViewModel> AddComment(CommentView NewComment)
         {
-            IEnumerable<TaskView> TaskViews = TaskService.AddComment(NewComment);
-            IEnumerable<TaskViewModel> Tasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewModels.TaskViewModel>>(TaskViews);
-            return Tasks.ToList();
+            IEnumerable<TaskViewModel> TaskViews = TaskService.AddComment(NewComment);
+            return TaskViews.ToList();
         }
 
         [HttpGet]
         public ActionResult DownloadFile(int ID)
         {
             string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";
-            Task Task = TaskService.GetTaskByID(ID);
+            TaskViewModel Task = TaskService.GetTaskByID(ID);
             byte[] fileBytes = System.IO.File.ReadAllBytes(path + Task.File);
             string fileName = Task.File;
             return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        public ActionResult Details(int ID)
+        {
+            TaskViewModel Task = TaskService.GetTaskByID(ID);
+            return View("Details", Task);
         }
 
     }
